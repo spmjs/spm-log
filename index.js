@@ -85,11 +85,11 @@ log.config = function(options) {
 function getMsg(category, msg, fn) {
   var len = Math.max(0, log.width - category.length);
   var pad = new Array(len + 1).join(' ');
+  msg = msg.replace(process.cwd(), '$CWD');
+  msg = msg.replace(process.env.HOME, '~');
   if (~msg.indexOf('\x1b[')) {
     msg = pad + fn(category) + ': ' + msg;
   } else {
-    msg = msg.replace(process.cwd(), '$CWD');
-    msg = msg.replace(process.env.HOME, '~');
     msg = pad + fn(category) + ': ' + msg;
   }
   return msg;
