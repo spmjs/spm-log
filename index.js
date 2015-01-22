@@ -75,9 +75,11 @@ log.config = function(options) {
   }
   if (options.color === false) {
     require('colorful').disabled = true;
+    require('colorful').isatty = false;
   }
   if (options.color === true) {
     require('colorful').disabled = false;
+    require('colorful').isatty = true;
   }
 };
 
