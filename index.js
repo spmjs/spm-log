@@ -1,5 +1,5 @@
 var util = require('util');
-var color = require('colorful');
+var chalk = require('chalk');
 
 var log = module.exports = {};
 
@@ -30,7 +30,7 @@ log.debug = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('debug', getMsg(category, msg, color.blue));
+  log.log('debug', getMsg(category, msg, chalk.white));
 };
 
 log.info = function() {
@@ -38,7 +38,7 @@ log.info = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('info', getMsg(category, msg, color.cyan));
+  log.log('info', getMsg(category, msg, chalk.cyan));
 };
 
 log.warn = function() {
@@ -46,7 +46,7 @@ log.warn = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('warn', getMsg(category, msg, color.yellow));
+  log.log('warn', getMsg(category, msg, chalk.yellow));
 };
 
 log.error = function() {
@@ -63,7 +63,7 @@ log.error = function() {
   });
   var msg = util.format.apply(this, args);
 
-  log.log('error', getMsg(category, msg, color.red));
+  log.log('error', getMsg(category, msg, chalk.red));
 };
 
 log.config = function(options) {
@@ -73,22 +73,15 @@ log.config = function(options) {
   if (options.quiet) {
     log.level = 'warn';
   }
-  if (options.color === false) {
-    require('colorful').disabled = true;
-    require('colorful').isatty = false;
-  }
-  if (options.color === true) {
-    require('colorful').disabled = false;
-    require('colorful').isatty = true;
-  }
+  chalk.enabled = options.color !== false;
 };
 
 
 function getMsg(category, msg, fn) {
   var len = Math.max(0, log.width - category.length);
   var pad = new Array(len + 1).join(' ');
-  msg = msg.replace(process.cwd(), '$CWD');
-  msg = msg.replace(process.env.HOME, '~');
+  msg = msg.replace(process.cwd(), '$CWD')
+           .replace(process.env.HOME, '~');
   if (~msg.indexOf('\x1b[')) {
     msg = pad + fn(category) + ': ' + msg;
   } else {

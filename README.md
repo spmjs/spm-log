@@ -4,17 +4,30 @@
 [npm-image]: https://img.shields.io/npm/v/spm-log.svg?style=flat
 [npm-url]: https://npmjs.org/package/spm-log
 
-A console.log wrapper for spm.
+A console.log wrapper for spm or whatever.
 
-## Install
+## Installtion
 
 ```bash
-$ npm install spm-log
+$ npm i --save spm-log
 ```
 
 ## Usage
 
-```javascript
+```js
 var log = require('spm-log');
-log.info('cat', 'message');
+
+log.debug('Debug Label', 'BaLa~ BaLa~ BaLa~');
+log.info('Info Label', 'BaLa~ BaLa~ BaLa~');
+log.warn('Warn Label', 'BaLa~ BaLa~ BaLa~');
+log.error('Error Label', 'BaLa~ BaLa~ BaLa~');
+```
+![Screenshot](./screenshot.png)
+
+You can disable the colors globally:
+
+```js
+log.config({
+  color: false
+})
 ```

@@ -1,7 +1,7 @@
 {
   "name": "spm-log",
   "version": "0.1.2",
-  "description": "A console.log wrapper for spm.",
+  "description": "A console.log wrapper for spm or whatever.",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec -t 20000 --require should ./test.js"
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/sorrycc/spm-log",
   "dependencies": {
-    "colorful": "^2.1.0"
+    "chalk": "~1.0.0"
   },
   "devDependencies": {
     "istanbul": "^0.3.0",

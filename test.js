@@ -1,6 +1,6 @@
 require('should');
 var log = require('./');
-var colorful = require('colorful');
+var chalk = require('chalk');
 var sinon = require('sinon');
 
 describe('log', function() {
@@ -18,9 +18,9 @@ describe('log', function() {
   });
 
   it('config color', function() {
-    colorful.disabled.should.eql(false);
+    chalk.enabled.should.eql(true);
     log.config({ color: false });
-    colorful.disabled.should.eql(true);
+    chalk.enabled.should.eql(false);
   });
 
   it('default level', function() {
