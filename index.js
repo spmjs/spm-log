@@ -82,10 +82,5 @@ function getMsg(category, msg, fn) {
   var pad = new Array(len + 1).join(' ');
   msg = msg.replace(process.cwd(), '$CWD')
            .replace(process.env.HOME, '~');
-  if (~msg.indexOf('\x1b[')) {
-    msg = pad + fn(category) + ': ' + msg;
-  } else {
-    msg = pad + fn(category) + ': ' + msg;
-  }
-  return msg;
+  return pad + fn(category) + ': ' + msg;
 }
