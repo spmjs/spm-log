@@ -10,6 +10,13 @@ var levels = {
   error: 4
 };
 
+var colors = {
+  debug: 'blue',
+  info: 'cyan',
+  warn: 'yellow',
+  error: 'red'
+};
+
 log.quiet = false;
 
 log.width = 15;
@@ -30,7 +37,7 @@ log.debug = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('debug', getMsg(category, msg, chalk.white));
+  log.log('debug', getMsg(category, msg, chalk[colors['debug']]));
 };
 
 log.info = function() {
@@ -38,7 +45,7 @@ log.info = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('info', getMsg(category, msg, chalk.cyan));
+  log.log('info', getMsg(category, msg, chalk[colors['info']]));
 };
 
 log.warn = function() {
@@ -46,7 +53,7 @@ log.warn = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('warn', getMsg(category, msg, chalk.yellow));
+  log.log('warn', getMsg(category, msg, chalk[colors['warn']]));
 };
 
 log.error = function() {
@@ -63,7 +70,7 @@ log.error = function() {
   });
   var msg = util.format.apply(this, args);
 
-  log.log('error', getMsg(category, msg, chalk.red));
+  log.log('error', getMsg(category, msg, chalk[colors['error']]));
 };
 
 log.config = function(options) {
@@ -73,7 +80,15 @@ log.config = function(options) {
   if (options.quiet) {
     log.level = 'warn';
   }
-  chalk.enabled = options.color !== false;
+
+  var colorOption = options.color;
+  if (colorOption && typeof colorOption === 'object') {
+    for (var level in colorOption) {
+      colors[level] = colorOption[level];
+    }
+  }
+
+  chalk.enabled = colorOption !== false;
 };
 
 

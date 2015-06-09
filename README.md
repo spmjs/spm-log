@@ -31,3 +31,11 @@ log.config({
   color: false
 })
 ```
+
+You can also customize the colors:
+
+```js
+log.config({
+  color: { debug: 'white' }
+})
+```

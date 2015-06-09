@@ -21,6 +21,8 @@ describe('log', function() {
     chalk.enabled.should.eql(true);
     log.config({ color: false });
     chalk.enabled.should.eql(false);
+    log.config({ color: { debug: 'white' } });
+    chalk.enabled.should.eql(true);
   });
 
   it('default level', function() {
@@ -36,6 +38,9 @@ describe('log', function() {
     var console_info = sinon.spy(console, 'info');
     var console_warn = sinon.spy(console, 'warn');
     var console_error = sinon.spy(console, 'error');
+
+    log.config({ color: false });
+
     log.debug('debug', 'debug');
     console_log.callCount.should.eql(0);
     log.info('info', 'info');
@@ -45,6 +50,7 @@ describe('log', function() {
     console_warn.callCount.should.eql(1);
     log.error('error', 'error');
     console_error.callCount.should.eql(1);
+
     log.config({ color: true });
   });
 
