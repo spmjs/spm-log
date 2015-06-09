@@ -32,6 +32,12 @@ log.config({
 })
 ```
 
+```js
+log.config({
+  color: { info: false }
+})
+```
+
 You can also customize the colors:
 
 ```js

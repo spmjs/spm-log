@@ -26,7 +26,8 @@ log.log = function(level, msg) {
   if (levels[level] >= levels[log.level] && log.quiet === false) {
     if (console[level]) {
       console[level](msg);
-    } else {
+    }
+    else {
       console.log(msg);
     }
   }
@@ -37,7 +38,7 @@ log.debug = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('debug', getMsg(category, msg, chalk[colors['debug']]));
+  log.log('debug', getMsg(category, msg, 'debug'));
 };
 
 log.info = function() {
@@ -45,7 +46,7 @@ log.info = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('info', getMsg(category, msg, chalk[colors['info']]));
+  log.log('info', getMsg(category, msg, 'info'));
 };
 
 log.warn = function() {
@@ -53,7 +54,7 @@ log.warn = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('warn', getMsg(category, msg, chalk[colors['warn']]));
+  log.log('warn', getMsg(category, msg, 'warn'));
 };
 
 log.error = function() {
@@ -62,15 +63,15 @@ log.error = function() {
   args = args.map(function(arg) {
     if (arg.message) {
       return arg.message;
-    } else if (arg.code) {
-      return arg.code;
-    } else {
-      return arg;
     }
+    if (arg.code) {
+      return arg.code;
+    }
+    return arg;
   });
   var msg = util.format.apply(this, args);
 
-  log.log('error', getMsg(category, msg, chalk[colors['error']]));
+  log.log('error', getMsg(category, msg, 'error'));
 };
 
 log.config = function(options) {
@@ -92,10 +93,16 @@ log.config = function(options) {
 };
 
 
-function getMsg(category, msg, fn) {
+function getMsg(category, msg, level) {
   var len = Math.max(0, log.width - category.length);
   var pad = new Array(len + 1).join(' ');
+
   msg = msg.replace(process.cwd(), '$CWD')
            .replace(process.env.HOME, '~');
-  return pad + fn(category) + ': ' + msg;
+
+  if (colors[level]) {
+    return pad + chalk[colors[level]](category) + ': ' + msg;
+  }
+
+  return pad + category + ': ' + msg;
 }
