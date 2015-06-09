@@ -96,13 +96,14 @@ log.config = function(options) {
 function getMsg(category, msg, level) {
   var len = Math.max(0, log.width - category.length);
   var pad = new Array(len + 1).join(' ');
+  var fn = chalk[colors[level]];
+
+  if (typeof fn === 'function') {
+    category = fn(category);
+  }
 
   msg = msg.replace(process.cwd(), '$CWD')
            .replace(process.env.HOME, '~');
-
-  if (colors[level]) {
-    return pad + chalk[colors[level]](category) + ': ' + msg;
-  }
 
   return pad + category + ': ' + msg;
 }
