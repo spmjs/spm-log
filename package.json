@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sorrycc/spm-log"
+    "url": "https://github.com/spmjs/spm-log"
   },
   "author": "chencheng <sorrycc@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sorrycc/spm-log/issues"
+    "url": "https://github.com/spmjs/spm-log/issues"
   },
-  "homepage": "https://github.com/sorrycc/spm-log",
+  "homepage": "https://github.com/spmjs/spm-log",
   "dependencies": {
     "chalk": "~1.0.0"
   },
