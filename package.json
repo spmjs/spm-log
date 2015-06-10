@@ -1,6 +1,6 @@
 {
   "name": "spm-log",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A console.log wrapper for spm or whatever.",
   "main": "index.js",
   "scripts": {
