@@ -1,5 +1,5 @@
 var util = require('util');
-var color = require('colorful');
+var chalk = require('chalk');
 
 var log = module.exports = {};
 
@@ -8,6 +8,13 @@ var levels = {
   info: 2,
   warn: 3,
   error: 4
+};
+
+var colors = {
+  debug: 'blue',
+  info: 'cyan',
+  warn: 'yellow',
+  error: 'red'
 };
 
 log.quiet = false;
@@ -19,7 +26,8 @@ log.log = function(level, msg) {
   if (levels[level] >= levels[log.level] && log.quiet === false) {
     if (console[level]) {
       console[level](msg);
-    } else {
+    }
+    else {
       console.log(msg);
     }
   }
@@ -30,7 +38,7 @@ log.debug = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('debug', getMsg(category, msg, color.blue));
+  log.log('debug', getMsg(category, msg, 'debug'));
 };
 
 log.info = function() {
@@ -38,7 +46,7 @@ log.info = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('info', getMsg(category, msg, color.cyan));
+  log.log('info', getMsg(category, msg, 'info'));
 };
 
 log.warn = function() {
@@ -46,7 +54,7 @@ log.warn = function() {
   var args = Array.prototype.slice.call(arguments).slice(1);
   var msg = util.format.apply(this, args);
 
-  log.log('warn', getMsg(category, msg, color.yellow));
+  log.log('warn', getMsg(category, msg, 'warn'));
 };
 
 log.error = function() {
@@ -55,15 +63,15 @@ log.error = function() {
   args = args.map(function(arg) {
     if (arg.message) {
       return arg.message;
-    } else if (arg.code) {
-      return arg.code;
-    } else {
-      return arg;
     }
+    if (arg.code) {
+      return arg.code;
+    }
+    return arg;
   });
   var msg = util.format.apply(this, args);
 
-  log.log('error', getMsg(category, msg, color.red));
+  log.log('error', getMsg(category, msg, 'error'));
 };
 
 log.config = function(options) {
@@ -73,26 +81,29 @@ log.config = function(options) {
   if (options.quiet) {
     log.level = 'warn';
   }
-  if (options.color === false) {
-    require('colorful').disabled = true;
-    require('colorful').isatty = false;
+
+  var colorOption = options.color;
+  if (colorOption && typeof colorOption === 'object') {
+    for (var level in colorOption) {
+      colors[level] = colorOption[level];
+    }
   }
-  if (options.color === true) {
-    require('colorful').disabled = false;
-    require('colorful').isatty = true;
-  }
+
+  chalk.enabled = colorOption !== false;
 };
 
 
-function getMsg(category, msg, fn) {
+function getMsg(category, msg, level) {
   var len = Math.max(0, log.width - category.length);
   var pad = new Array(len + 1).join(' ');
-  msg = msg.replace(process.cwd(), '$CWD');
-  msg = msg.replace(process.env.HOME, '~');
-  if (~msg.indexOf('\x1b[')) {
-    msg = pad + fn(category) + ': ' + msg;
-  } else {
-    msg = pad + fn(category) + ': ' + msg;
+  var fn = chalk[colors[level]];
+
+  if (typeof fn === 'function') {
+    category = fn(category);
   }
-  return msg;
+
+  msg = msg.replace(process.cwd(), '$CWD')
+           .replace(process.env.HOME, '~');
+
+  return pad + category + ': ' + msg;
 }

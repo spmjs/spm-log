@@ -1,23 +1,23 @@
 {
   "name": "spm-log",
   "version": "0.1.2",
-  "description": "A console.log wrapper for spm.",
+  "description": "A console.log wrapper for spm or whatever.",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec -t 20000 --require should ./test.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sorrycc/spm-log"
+    "url": "https://github.com/spmjs/spm-log"
   },
   "author": "chencheng <sorrycc@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sorrycc/spm-log/issues"
+    "url": "https://github.com/spmjs/spm-log/issues"
   },
-  "homepage": "https://github.com/sorrycc/spm-log",
+  "homepage": "https://github.com/spmjs/spm-log",
   "dependencies": {
-    "colorful": "^2.1.0"
+    "chalk": "~1.0.0"
   },
   "devDependencies": {
     "istanbul": "^0.3.0",
