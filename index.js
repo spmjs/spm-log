@@ -1,3 +1,5 @@
+'use strict';
+
 var util = require('util');
 var chalk = require('chalk');
 
@@ -18,9 +20,14 @@ var colors = {
 };
 
 log.quiet = false;
-
 log.width = 15;
-log.level = 'info';
+
+var SPM_LOG = process.env.SPM_LOG;
+if (SPM_LOG && levels[SPM_LOG.toLowerCase()]) {
+  log.level = SPM_LOG.toLowerCase();
+} else {
+  log.level = 'info';
+}
 
 log.log = function(level, msg) {
   if (levels[level] >= levels[log.level] && log.quiet === false) {
